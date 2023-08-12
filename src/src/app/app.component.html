@@ -1,0 +1,37 @@
+<div class="main-container">
+  <div class="header-container">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" [routerLink]="['/']">
+        <img src="../assets/notary-logo-wht.png" alt="Notary Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content"
+        aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle Navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar-content">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/']"><i class="fa-sharp fa-regular fa-window"></i>&nbsp;Overview</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/certificates']"><i
+                class="fa-sharp fa-regular fa-certificate"></i>&nbsp;Certificates</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/keys']"><i class="fa-regular fa-key">&nbsp;</i>Keys</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/configuration']"><i
+                class="fa-sharp fa-regular fa-gears">&nbsp;</i>Configuration</a>
+          </li>
+        </ul>
+        <span class="navbar-text">
+          Welcome, [username]
+        </span>
+      </div>
+    </nav>
+  </div>
+  <div class="content-container">
+    <router-outlet></router-outlet>
+  </div>
+</div>

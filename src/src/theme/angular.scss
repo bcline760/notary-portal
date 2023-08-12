@@ -1,0 +1,63 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+$primary-angular-color: #2B8CFF;
+$complementary-angular-color: #F08B25;
+
+$notary-palette-prinary: (
+    50: #E3F3FF,
+    100: #BCDFFF,
+    200: #92CCFF,
+    300: #65B8FF,
+    400: #44A8FF,
+    500: #2699FF,
+    600: $primary-angular-color,
+    700: #2379DD,
+    800: #2067CB,
+    900: #1C48AB,
+    contrast: (50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white)
+);
+
+$notary-palette-complementary: (
+    50: #FEF2E2,
+    100: #FCDFB6,
+    200: #FACA87,
+    300: #F8B559,
+    400: #F7A53A,
+    500: #F59628,
+    600: $complementary-angular-color,
+    700: #EA7C23,
+    800: #E36D20,
+    900: #D7561D,
+    contrast: (50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white)
+);
+
+$notary-primary: mat.define-palette($notary-palette-prinary, 600);
+$notary-secondary: mat.define-palette($notary-palette-complementary, 600);
+$warning: mat.define-palette(mat.$red-palette);
+
+$notary-theme: mat.define-light-theme((color:(primary: $notary-primary,
+                accent: $notary-secondary,
+                warn: $warning ),
+            typography: mat.define-typography-config(),
+            density: 0));
+
+@include mat.all-component-themes($notary-theme);

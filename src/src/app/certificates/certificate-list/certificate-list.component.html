@@ -1,0 +1,105 @@
+<div class="container mt-4">
+    <form [formGroup]="caSelectFg" class="row">
+        <!-- <mat-form-field appearance="outline" *ngIf="caList$ != null">
+            <mat-label>Certificate Authority</mat-label>
+            <mat-select formControlName="caList" (selectionChange)="onChangeCaList($event)">
+                <mat-option>Select Certificate Authority</mat-option>
+                <mat-option *ngFor="let ca of caList$ | async" [value]="ca.slug">
+                    {{ca.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field> -->
+        <div class="col">
+            <select class="form-select" formControlName="caList" aria-label="Certificate Authority Select" name="caList"
+                (change)="onChangeCaList($event)">
+                <option value="none">Select Certificate Authority</option>
+                <option *ngFor="let ca of caList$ | async" [value]="ca.slug">
+                    {{ca.name}}
+                </option>
+            </select>
+        </div>
+        <div class="col">
+            &nbsp;
+        </div>
+        <div class="col">
+            &nbsp;
+        </div>
+    </form>
+    <div *ngIf="showTable">
+        <div class="mt-2 mb-2 d-flex flex-row-reverse">
+            <div class="p-2"></div>
+            <div class="p-2">
+
+            </div>
+            <div class="p-2">
+                <button mat-raised-button color="basic" (click)="onCertificateCreateClick($event)">Create
+                    Certificate</button>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Expire</td>
+                    <td>S/N</td>
+                    <td>Download</td>
+                    <td>Delete</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of certificates">
+                    <td>{{c.name}}</td>
+                    <td>{{c.notAfter}}</td>
+                    <td>{{c.serialNumber}}</td>
+                    <td>
+                        <button mat-icon-button color="basic"
+                            (click)="onDownloadCertificateClick(downloadTemplate, c.slug)">
+                            <mat-icon>download</mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <button mat-icon-button color="warn" (click)="onDeleteCertificateClick(c.slug)">
+                            <mat-icon>delete forever</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="certificates===null">
+            Data not retrieved from server
+        </div>
+        <div *ngIf="!certificates">
+            An error has occured
+        </div>
+    </div>
+</div>
+<ng-template #downloadTemplate>
+    <div class="modal-header">
+        <div class="modal-title pull-left">
+            Downloading Certificate
+        </div>
+    </div>
+    <div class="modal-body">
+        <form class="row" [formGroup]="downloadForm">
+            <div class="mb-3">
+                <mat-button-toggle-group name="format" formControlName="format"
+                    (click)="onDownloadCertificateFormatClick($event)">
+                    <mat-button-toggle value="Der">DER</mat-button-toggle>
+                    <mat-button-toggle value="Pem">PEM</mat-button-toggle>
+                    <mat-button-toggle value="Pkcs12">PKCS #12</mat-button-toggle>
+                    <mat-button-toggle value="Pkcs7">PKCS #7</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+            <div class="mb-3">
+                <label for="certPassword">Password</label>
+                <input type="password" formControlName="password" class="form-control form-control-sm"
+                    id="certPassword">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button mat-raised-button color="primary" (click)="onDownloadModalOk('');">OK</button>
+        &nbsp;
+        <button mat-raised-button color="basic" (click)="onDownloadModalCancel();">Cancel</button>
+    </div>
+</ng-template>

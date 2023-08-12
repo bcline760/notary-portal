@@ -1,0 +1,226 @@
+<div class="container">
+    <div *ngIf="pageError === null && certificateAuthority !== null">
+        <h2>Creating certificate under {{certificateAuthority.name}}</h2>
+        <form [formGroup]="certificateRequestForm">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3 mt-2">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-sm-3"><label for="certificateName">Name</label></div>
+                            <div class="col"><input type="text" formControlName="name"
+                                    class="form-control form-control-sm" id="certificateName"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-sm-3"><label for="certificatePassword">Password</label></div>
+                            <div class="col"><input type="password" formControlName="password"
+                                    class="form-control form-control-sm" id="certificatePassword"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-sm-3"><label for="commonName">Common Name</label></div>
+                            <div class="col"><input type="text" formControlName="commonName"
+                                    class="form-control form-control-sm" id="commonName"></div>
+                            <div class="col-auto">
+                                <button mat-mini-fab color="basic" (click)="onSubjectDialogClick(subjectDialog)">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-sm-3"><label for="lengthInYears">Valid For</label></div>
+                            <div class="col"><select class="form-select form-select-sm" formControlName="lengthInYears"
+                                    id="lengthInYears">
+                                    <option selected value="0">Select Length</option>
+                                    <option value="1">1 year</option>
+                                    <option value="2">2 years</option>
+                                    <option value="5">5 years</option>
+                                    <option value="10">10 years</option>
+                                </select></div>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-sm-3">Key Algorithm</div>
+                            <div class="col"><mat-button-toggle-group name="keyAlgorithm" formControlName="keyAlgorithm"
+                                    aria-label="Key Algorithm">
+                                    <mat-button-toggle value="RSA">RSA</mat-button-toggle>
+                                    <mat-button-toggle value="EllipticCurve">Elliptic Curve</mat-button-toggle>
+                                </mat-button-toggle-group></div>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-3" *ngIf="keyAlgorithm === 'RSA'">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-sm-3">RSA</div>
+                            <div class="col">
+                                <mat-button-toggle-group name="keySize" formControlName="keySize">
+                                    <mat-button-toggle value="1024">1024</mat-button-toggle>
+                                    <mat-button-toggle value="2048">2048</mat-button-toggle>
+                                    <mat-button-toggle value="1024">4096</mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-3" *ngIf="keyAlgorithm === 'EllipticCurve'">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-sm-3">Elliptic Curve</div>
+                            <div class="col">
+                                <mat-button-toggle-group name="ellipticCurve" formControlName="ellipticCurve">
+                                    <mat-button-toggle value="P256">P256</mat-button-toggle>
+                                    <mat-button-toggle value="P384">P384</mat-button-toggle>
+                                    <mat-button-toggle value="P512">P512</mat-button-toggle>
+                                    <mat-button-toggle value="P256K">P256K</mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-sm-3">Key Usage</div>
+                            <div class="col">0 selected</div>
+                            <div class="col-auto">
+                                <button mat-mini-fab color="basic"
+                                    (click)="onAdvancedOptionsDialogClick(advancedDialog)">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <div class="row g-3 align-items-center">
+                            <div class="col">Subject Alternative Name</div>
+                            <div class="col">
+                                <div *ngIf="subjectAlternativeNames.length > 0" class="mb-3">
+                                    <div class="row" *ngFor="let san of subjectAlternativeNames">
+                                        <div class="col">{{san.name}}</div>
+                                        <div class="col-auto">:</div>
+                                        <div class="col-auto">{{san.kind}}</div>
+                                        <div class="col-auto">
+                                            &nbsp;&nbsp;<a (click)="onRemoveSanClick(san.name)"><i
+                                                    class="fas fa-times-circle text-danger"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <button mat-mini-fab color="basic" (click)="onAddSanClick(addSanDialogRef)">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger"
+                        *ngIf="certificateRequestForm && certificateRequestForm.touched && certificateRequestForm.status==='INVALID'">
+                        Form is not valid
+                        {{certificateRequestForm.errors}}
+                    </div>
+                </div>
+                <div class="col">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div *ngIf="pageError !== null">
+        Shit broke
+    </div>
+</div>
+<nav class="navbar fixed-bottom bg-body-tertiary">
+    <mat-divider></mat-divider>
+    <div class="container-fluid">
+        <button type="button" mat-raised-button color="primary"
+            (click)="onCreateCertificateSubmit($event)">Create</button>
+    </div>
+</nav>
+
+<ng-template #addSanDialogRef>
+    <div class="modal-header">
+        <div class="modal-title pull-left">
+            Subject Alternative Name
+        </div>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="sanDialogForm">
+            <div class="mb-3">
+                <label for="sanText">Name</label>
+                <input type="text" formControlName="san" class="form-control form-control-sm" id="sanText">
+            </div>
+            <div class="mb-3">
+                <label for="sanKind">Kind</label>
+                <select class="form-select form-select-sm" formControlName="kind">
+                    <option selected value="">Select SAN Type</option>
+                    <option value="Dns">D.N.S.</option>
+                    <option value="Email">E-Mail</option>
+                    <option value="IpAddress">I.P. Address</option>
+                    <option value="Uri">U.R.I.</option>
+                    <option value="UserPrincipal">User Principal</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button mat-raised-button color="primary" (click)="onAddSanDialogOkClick();">OK</button>&nbsp;
+        <button mat-raised-button color="basic" (click)="addSanDialog.hide()">Cancel</button>
+    </div>
+</ng-template>
+<ng-template #subjectDialog>
+    <div class="modal-header">
+        Additional Subject Fields
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="mb-3">
+                <label for="">Organization</label>
+                <input type="text" formControlName="organization" class="form-control form-control-sm"
+                    id="organization">
+            </div>
+            <div class="mb-3">
+                <label for="">Organizational Unit</label>
+                <input type="text" formControlName="organizationalUnit" class="form-control form-control-sm"
+                    id="organizationalUnit">
+            </div>
+            <div class="mb-3">
+                <label for="">Locale</label>
+                <input type="text" formControlName="locale" class="form-control form-control-sm" id="locale">
+            </div>
+            <div class="mb-3">
+                <label for="">State or Province</label>
+                <input type="text" formControlName="stateProvince" class="form-control form-control-sm"
+                    id="stateProvince">
+            </div>
+            <div class="mb-3">
+                <label for="">Country (two letter country code)</label>
+                <input type="text" formControlName="country" class="form-control form-control-sm" id="country">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button mat-raised-button color="primary" (click)="onAddSanDialogOkClick();">OK</button>&nbsp;
+        <button mat-raised-button color="basic" (click)="subjectDialogRef.hide()">Cancel</button>
+    </div>
+</ng-template>
+<ng-template #advancedDialog>
+    <div class="modal-header">
+        Advanced Options
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="advancedOptionsForm">
+            <h4>Key Usage</h4>
+
+            <div class="form-check" *ngFor="let k of keyUsageControl.controls; let i = index">
+                <input class="form-check-input" type="checkbox" [formControl]="k" value="{{defaultKeyUsages[i].value}}">
+                <label class="form-check-label">{{defaultKeyUsages[i].usage}}</label>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button mat-raised-button color="primary"
+            (click)="onAdvancedOptionsDialogOk(advancedOptionsForm.value);">OK</button>&nbsp;
+        <button mat-raised-button color="basic" (click)="advancedOptionsDialog.hide()">Cancel</button>
+    </div>
+</ng-template>
