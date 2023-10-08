@@ -26,12 +26,18 @@
           </li>
         </ul>
         <span class="navbar-text">
-          Welcome, [username]
+          Welcome, {{username}}
+          <button mat-icon-button color="basic" *ngIf="!loginDisplay" (click)="login()">
+            <mat-icon>login</mat-icon>
+          </button>
+          <button mat-icon-button color="basic" *ngIf="loginDisplay" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+          </button>
         </span>
       </div>
     </nav>
   </div>
   <div class="content-container">
-    <router-outlet></router-outlet>
+    <router-outlet *ngIf="!isIframe"></router-outlet>
   </div>
 </div>

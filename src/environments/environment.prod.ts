@@ -1,4 +1,7 @@
 export const environment = {
   apiUrl: 'api/',
-  production: true
+  clientId: '[clientId]',
+  production: true,
+  redirectUrl: '[redirectUrl]',
+  tenantId: '[tenantId]'
 };

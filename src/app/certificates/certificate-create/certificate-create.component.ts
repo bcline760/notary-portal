@@ -244,5 +244,6 @@ export class CertificateCreateComponent implements OnInit, OnDestroy {
   public get pageError(): string | null { return this._pageError; }
   public get sanDialogForm(): FormGroup { return this._sanDialogForm; }
   public get subjectAlternativeNames(): SubjectAlternativeName[] { return this._subjectAlternativeNames; }
+  public get subjectDialogForm(): FormGroup { return this._subjectDialogForm; }
   public get subjectDialogRef(): BsModalRef { return this._subjectDialogRef; }
 }

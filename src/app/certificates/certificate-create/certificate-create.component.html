@@ -173,7 +173,7 @@
         Additional Subject Fields
     </div>
     <div class="modal-body">
-        <form>
+        <form [formGroup]="subjectDialogForm">
             <div class="mb-3">
                 <label for="">Organization</label>
                 <input type="text" formControlName="organization" class="form-control form-control-sm"
