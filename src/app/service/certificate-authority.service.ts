@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { EntityService } from './entity.service';
 import { CertificateAuthority } from '../contract/certificate-authority.contract';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Certificate } from '../contract/certificate.contract';
 
@@ -10,10 +10,16 @@ import { Certificate } from '../contract/certificate.contract';
   providedIn: 'root'
 })
 export class CertificateAuthorityService extends EntityService<CertificateAuthority> {
+  private _selectedCertificateAuthority: CertificateAuthority | null;
+
+  private _caSubject: BehaviorSubject<CertificateAuthority | null>;
+
   constructor(private httpClient: HttpClient) {
     super(httpClient);
 
     this.controller = 'ca';
+    this._selectedCertificateAuthority = null;
+    this._caSubject = new BehaviorSubject<CertificateAuthority | null>(null);
   }
 
   public getCertificates(slug: string): Observable<Certificate[]> {
@@ -27,4 +33,15 @@ export class CertificateAuthorityService extends EntityService<CertificateAuthor
 
     return certificates;
   }
+
+  public get selectedCertificateAuthority(): CertificateAuthority | null { return this._selectedCertificateAuthority; }
+  public set selectedCertificateAuthority(value: CertificateAuthority | null) {
+    this._selectedCertificateAuthority = value;
+
+    if (this._caSubject !== null) {
+      this._caSubject.next(value);
+    }
+  }
+
+  public get subject(): BehaviorSubject<CertificateAuthority | null> { return this._caSubject; }
 }

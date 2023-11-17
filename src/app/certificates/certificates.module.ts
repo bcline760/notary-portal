@@ -18,13 +18,13 @@ import { CertificateAuthorityService } from '../service/certificate-authority.se
 
 import { CertificatesRoutingModule } from './certificates-routing.module';
 import { CertificatesComponent } from './certificates.component';
-import { CertificateCreateComponent } from './certificate-create/certificate-create.component';
+import { CertificateDetailComponent } from './certificate-detail/certificate-detail.component';
 import { CertificateListComponent } from './certificate-list/certificate-list.component';
 
 @NgModule({
   declarations: [
     CertificatesComponent,
-    CertificateCreateComponent,
+    CertificateDetailComponent,
     CertificateListComponent
   ],
   imports: [

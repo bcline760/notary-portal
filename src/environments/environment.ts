@@ -4,7 +4,10 @@
 
 export const environment = {
   apiUrl: 'https://localhost:7038/api',
-  production: false
+  clientId: '6014aad2-177e-437c-a75f-b33659448fd2',
+  production: false,
+  redirectUrl: 'http://localhost:4200',
+  tenantId: 'c6d4c62b-3ef5-4b31-94bc-438263d4ede2'
 };
 
 /*

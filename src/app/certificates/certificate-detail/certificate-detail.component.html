@@ -1,5 +1,5 @@
 <div class="container">
-    <div *ngIf="pageError === null && certificateAuthority !== null">
+    <div *ngIf="pageError === null && certificate === null && certificateAuthority!==null">
         <h2>Creating certificate under {{certificateAuthority.name}}</h2>
         <form [formGroup]="certificateRequestForm">
             <div class="row">
@@ -124,6 +124,9 @@
                 </div>
             </div>
         </form>
+
+    </div>
+    <div *ngIf="certificateAuthority!=null && certificate!=null && pageError!=null">
 
     </div>
     <div *ngIf="pageError !== null">

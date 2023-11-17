@@ -9,26 +9,31 @@ import { SubjectAlternativeName } from '../../contract/subject-alternative-name.
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { KeyUsage } from 'src/app/contract/key-usage.contract';
+import { Certificate } from 'src/app/contract/certificate.contract';
 
 @Component({
-  selector: 'app-certificate-create',
-  templateUrl: './certificate-create.component.html',
-  styleUrls: ['./certificate-create.component.scss']
+  selector: 'app-certificate-detail',
+  templateUrl: './certificate-detail.component.html',
+  styleUrls: ['./certificate-detail.component.scss']
 })
-export class CertificateCreateComponent implements OnInit, OnDestroy {
-  private _addSanDialogRef!: BsModalRef;
-  private _advancedOptionsDialogRef!: BsModalRef;
+export class CertificateDetailComponent implements OnInit, OnDestroy {
   private _advancedDialogForm: FormGroup;
-  private _certificateAuthority: CertificateAuthority | null = null;
-  private _certificateRequestForm: FormGroup;
-  private _issuedCertificate: Subscription | null = null;
-  private _keyUsageFlag: number = 0;
-  private _pageError: string | null = null;
-  private _routeSub: Subscription;
   private _sanDialogForm: FormGroup;
   private _subjectDialogForm: FormGroup;
-  private _subjectAlternativeNames: SubjectAlternativeName[] = [];
+  private _certificateRequestForm: FormGroup;
+  private _issuedCertificate: Subscription | null = null;
+  private _routeSub: Subscription;
+
+  private _addSanDialogRef!: BsModalRef;
+  private _advancedOptionsDialogRef!: BsModalRef;
   private _subjectDialogRef!: BsModalRef;
+
+  private _certificate: Certificate | null = null;
+  private _certificateAuthority: CertificateAuthority | null = null;
+  private _subjectAlternativeNames: SubjectAlternativeName[] = [];
+
+  private _keyUsageFlag: number = 0;
+  private _pageError: string | null = null;
 
   constructor(
     private modalService: BsModalService,
@@ -40,16 +45,14 @@ export class CertificateCreateComponent implements OnInit, OnDestroy {
   ) {
     const that = this;
     this._routeSub = this.route.params.subscribe(s => {
+      that._certificateAuthority = that.caService.selectedCertificateAuthority;
+
       if (s['slug']) {
-        that.caService.get(s['slug']).pipe(first()).subscribe(t => {
-          if (!t) {
-            that._pageError = 'Certificate authority not provided or is invalid';
-          }
-          that._certificateAuthority = t;
-          that._pageError = null;
+        this.certSvc.get(s['slug']).pipe(first()).subscribe(t => {
+          this._certificate = t;
         });
       } else {
-        that._pageError = 'Certificate authority not provided or is invalid';
+        this._certificate = null;
       }
     });
 
@@ -236,6 +239,7 @@ export class CertificateCreateComponent implements OnInit, OnDestroy {
   public get addSanDialog(): BsModalRef { return this._addSanDialogRef; }
   public get advancedOptionsDialog(): BsModalRef { return this._advancedOptionsDialogRef; }
   public get advancedOptionsForm(): FormGroup { return this._advancedDialogForm; }
+  public get certificate(): Certificate | null { return this._certificate; }
   public get certificateAuthority(): CertificateAuthority | null { return this._certificateAuthority; }
   public get certificateRequestForm(): FormGroup { return this._certificateRequestForm; }
   public get keyAlgorithm(): string { return this._certificateRequestForm.get('keyAlgorithm')?.value; }

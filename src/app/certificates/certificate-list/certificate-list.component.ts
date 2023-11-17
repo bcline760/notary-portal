@@ -32,6 +32,7 @@ export class CertificateListComponent implements OnInit, OnDestroy, AfterViewIni
 
   @ViewChild('certificateTable', { static: true }) table!: MatTable<Certificate[]>;
 
+
   constructor(
     private modalService: BsModalService,
     private fb: FormBuilder,
@@ -93,7 +94,7 @@ export class CertificateListComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   public onCertificateCreateClick(event: any) {
-    this.router.navigate(['certificates', 'create', this.selectedCaSlug]);
+    this.router.navigate(['certificates', 'detail']);
   }
 
   public onChangeCaList(event: any) {
